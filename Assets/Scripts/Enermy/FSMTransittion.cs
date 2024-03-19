@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class FSMTrasittion
+public class FSMTransittion
 {
     public FSMDecide decide;
     public string trueState;
