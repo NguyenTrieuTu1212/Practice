@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField][Range(1f, 10f)] private float speedBullet;
-
-
-    public Vector3 direction;
+    [SerializeField] [Range(1f, 10f)] private float speedBullet;
+    public Vector3 direction { get; set;}
 
 
 
     private void Update()
     {
-        Shoot();
+        BulletMove();
+    }
+
+    private void BulletMove()
+    {
+        transform.Translate(direction * speedBullet * Time.deltaTime);
     }
 
 
-    private void Shoot()
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        transform.Translate(direction * speedBullet * Time.deltaTime);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            BulletManager.Instance.ReturnBullet(gameObject.GetComponent<Bullet>());
+        }
     }
 }

@@ -7,26 +7,25 @@ public class ActionCyan : FSMAction
 
     [SerializeField] private GameObject target;
     [SerializeField][Range(1f,10f)] private float timeBtwShoot;
-    
-    private bool isShoot = false;
+
+    private bool isShooting = false;
     
     public override void Action()
     {
         gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
-        if (!isShoot) StartCoroutine(WaitingShootNextTime());
+        if(!isShooting) StartCoroutine(WaitingNextShoot());
     }
 
 
-    IEnumerator WaitingShootNextTime()
+
+
+    IEnumerator WaitingNextShoot()
     {
-        isShoot = true;
+        isShooting = true;
         Shoot();
         yield return new WaitForSeconds(timeBtwShoot);
-        isShoot=false;  
+        isShooting=false;
     }
-    
-    
-
 
     private void Shoot()
     {
@@ -34,4 +33,7 @@ public class ActionCyan : FSMAction
         Bullet bullet = BulletManager.Instance.TakeBullet(transform.position);
         bullet.direction = dir;
     }
+    
+
+    
 }
