@@ -58,12 +58,13 @@ public class BulletManager : MonoBehaviour
 
 
 
-    public Bullet TakeBullet(Vector3 posSpawn)
+    public Bullet TakeBullet(Vector3 posSpawn,float rad)
     {
         if (queue.Count <= 0) PrepareBullet();
         Bullet bullet = queue.Dequeue();
         bullet.gameObject.SetActive(true);
         bullet.transform.position = posSpawn;
+        bullet.transform.rotation = Quaternion.Euler(0f, 0f, rad);
         return bullet;  
     }
 

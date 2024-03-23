@@ -9,6 +9,7 @@ public class ActionCyan : FSMAction
     [SerializeField][Range(1f,10f)] private float timeBtwShoot;
 
     private bool isShooting = false;
+    private float angel = 0;
     
     public override void Action()
     {
@@ -29,9 +30,9 @@ public class ActionCyan : FSMAction
 
     private void Shoot()
     {
-        Vector3 dir = target.transform.position - transform.position;
-        Bullet bullet = BulletManager.Instance.TakeBullet(transform.position);
-        bullet.direction = dir;
+        angel -= 45;
+        Bullet bullet = BulletManager.Instance.TakeBullet(transform.position,angel);
+        bullet.direction = target.transform.position - transform.position;
     }
     
 
