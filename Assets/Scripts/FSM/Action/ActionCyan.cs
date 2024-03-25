@@ -30,9 +30,7 @@ public class ActionCyan : FSMAction
 
     private void Shoot()
     {
-        angel -= 45;
-        Bullet bullet = BulletManager.Instance.TakeBullet(transform.position,angel);
-        bullet.direction = target.transform.position - transform.position;
+        
     }
     
 

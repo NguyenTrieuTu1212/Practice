@@ -6,77 +6,73 @@ public class BulletManager : MonoBehaviour
 {
     private static BulletManager instance;
     public static BulletManager Instance => instance;
-    [SerializeField] private Transform pool;
-    [SerializeField] private List<Bullet> listBullet = new List<Bullet>();
-    private Queue<Bullet> queue = new Queue<Bullet>();
+
+
+    [SerializeField] private Transform Pool;
+    [SerializeField] private List<Bullet> listBullets = new List<Bullet>();
+    private Queue<Bullet> queueBullet = new Queue<Bullet>();
 
     private void Awake()
     {
         if (instance != null)
         {
-            Debug.LogError("More than instance in your game !!!!");
+            Debug.Log("More than 1 instance in your game !!!");
             return;
         }
+
         instance = this;
         AddPrefabs();
-        PrepareBullet();
+        Prepare();
     }
+
 
 
     private void AddPrefabs()
     {
         Transform objPrefabs = transform.Find("Prefabs");
-        if (objPrefabs == null) return;
         foreach(Transform child in objPrefabs)
         {
-            listBullet.Add(child.GetComponent<Bullet>());   
+            listBullets.Add(child.GetComponent<Bullet>());
         }
-        HidePrefabs();
-       
+        HideBullet();
     }
 
 
-
-    private void HidePrefabs()
+    private void HideBullet()
     {
-        foreach(Bullet bullet in listBullet)
+        foreach (Bullet bullet in listBullets)
         {
             bullet.gameObject.SetActive(false);
         }
     }
 
 
-   private void PrepareBullet()
-   {
+    private void Prepare()
+    {
         for(int i = 0; i < 10; i++)
         {
-            Bullet bullet = Instantiate(listBullet[0], pool);
+            Bullet bullet = Instantiate(listBullets[0],Pool);
             bullet.gameObject.SetActive(false);
-            queue.Enqueue(bullet);
+            queueBullet.Enqueue(bullet);
         }
-   }
-
-
-
-    public Bullet TakeBullet(Vector3 posSpawn,float rad)
-    {
-        if (queue.Count <= 0) PrepareBullet();
-        Bullet bullet = queue.Dequeue();
-        bullet.gameObject.SetActive(true);
-        bullet.transform.position = posSpawn;
-        bullet.transform.rotation = Quaternion.Euler(0f, 0f, rad);
-        return bullet;  
     }
 
 
 
-    public void ReturnBullet(Bullet bullet)
+    public Bullet TakeBullet(Vector2 posSpawn)
+    {
+        if(queueBullet.Count<=0) Prepare();
+        Bullet bullet = queueBullet.Dequeue();
+        bullet.gameObject.SetActive(true);
+        bullet.gameObject.transform.position = posSpawn;
+        return bullet;
+    }
+
+
+    public void ReturnBulletInQueue(Bullet bullet)
     {
         bullet.gameObject.SetActive(false);
-        bullet.gameObject.transform.SetParent(pool);
-        queue.Enqueue(bullet);
-
+        bullet.gameObject.transform.SetParent(Pool);
+        queueBullet.Enqueue(bullet);
     }
-
-
 }
