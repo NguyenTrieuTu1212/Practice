@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Brain : MonoBehaviour
 {
-    [SerializeField] private string initState;
-    [SerializeField] private FSMStates[] states;
+    [SerializeField] private string initIDState;
+    [SerializeField] private FSMState[] states;
+    private FSMState currentState;
 
-    private FSMStates currentState;
 
     private void Awake()
     {
-        currentState = FindStates(initState);
+        currentState = FindState(initIDState);
     }
 
 
@@ -22,18 +22,21 @@ public class Brain : MonoBehaviour
     }
 
 
-    private FSMStates FindStates(string ID)
-    {
-        foreach(FSMStates state in states) if (state.ID == ID) return state;
-        return null;
-    }
 
-
-    public void ChangeState(string newStateChanged)
+    public void ChangeState(string IDNewState)
     {
-        FSMStates newState = FindStates(newStateChanged);
+        FSMState newState = FindState(IDNewState);
         if (newState == null) return;
         currentState = newState;
     }
 
+
+    private FSMState FindState(string IDState)
+    {
+        foreach(FSMState state in states)
+        {
+            if(state.IDState == IDState) return state;
+        }
+        return null;
+    }
 }
