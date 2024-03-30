@@ -7,35 +7,33 @@ public class DataPersistanceManager : MonoBehaviour
 {
     private static DataPersistanceManager instance;
     public static DataPersistanceManager Instance => instance;
-
-
-    [SerializeField] private string nameFile = "";
-
-    private List<IDataPersistance> dataPersistances = new List<IDataPersistance>();
+    [SerializeField] private string fileName = "";
     private GameData gameData;
-    private FileHanlder fileHanlder;
+    private List<IDataPersistance> dataPersistances;
+    private FileHandler fileHandler;
+
 
     private void Awake()
     {
-        if (instance != null)
+        if(instance != null)
         {
-            Debug.Log("More than 1 instance in your game !!! Instance have been deleted");
+            Debug.Log("More than 1 instance in your game !!!!. Instance has been removed");
             Destroy(gameObject);
             return;
         }
         instance = this;
-        fileHanlder = new FileHanlder(Application.persistentDataPath,nameFile);
+        fileHandler = new FileHandler(Application.persistentDataPath,fileName);
         DontDestroyOnLoad(gameObject);
     }
 
 
 
-
     private void Start()
     {
-        dataPersistances = FindAllDataInObject();
-        LoadGame();
+        dataPersistances = FindAllInterfaceInGameObject();
+        LoadGame(); 
     }
+
 
     private void NewGame()
     {
@@ -46,16 +44,13 @@ public class DataPersistanceManager : MonoBehaviour
 
     private void LoadGame()
     {
-        gameData = fileHanlder.ReadData();
-        if(gameData == null)
-        {
-            NewGame();
-        }
+        gameData = fileHandler.ReadData();
+        if(gameData == null) NewGame();
         foreach(IDataPersistance persistance in dataPersistances)
         {
             persistance.LoadGame(gameData);
         }
-        Debug.Log("Load game: " + gameData.point);
+        Debug.Log("Load data game is" + gameData.point);
     }
 
 
@@ -65,21 +60,21 @@ public class DataPersistanceManager : MonoBehaviour
         {
             persistance.SaveGame(ref gameData);
         }
-        fileHanlder.WriteData(gameData);
+
+        fileHandler.WriteData(gameData);
+        Debug.Log("Save data game is" + gameData.point);
     }
+
 
     private void OnApplicationQuit()
     {
         SaveGame();
     }
 
-
-
-    private List<IDataPersistance> FindAllDataInObject()
+    private List<IDataPersistance> FindAllInterfaceInGameObject()
     {
-        IEnumerable<IDataPersistance> listDataPersistances = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();
-        return new List<IDataPersistance>(listDataPersistances);
-
+        IEnumerable<IDataPersistance> dataPersistances = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();
+        return new List<IDataPersistance>(dataPersistances);
     }
 
 

@@ -3,22 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Points : MonoBehaviour, IDataPersistance
+public class Points : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI point_TMP;
     int pointToAdd = 0;
 
 
-    public void LoadGame(GameData data)
-    {
-        pointToAdd = data.point;
-    }
-
-    public void SaveGame(ref GameData data)
-    {
-        data.point = pointToAdd;
-    }
 
     private void AddPointCallBackl(int point)
     {
@@ -30,7 +21,7 @@ public class Points : MonoBehaviour, IDataPersistance
     {
         Button.OnClickButton += AddPointCallBackl;
     }
-
+    
 
     private void OnDisable()
     {
