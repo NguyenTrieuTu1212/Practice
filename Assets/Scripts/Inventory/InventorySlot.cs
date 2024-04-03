@@ -7,23 +7,23 @@ using TMPro;
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private Image iconItem;
-    [SerializeField] private Image amountContainer;
-    [SerializeField] private TextMeshProUGUI amountItem;
+    [SerializeField] private Image amountItemContainer;
+    [SerializeField] private TextMeshProUGUI amountItem_TMP;
+    public static event Action<int> OnClickSelectIndexSlot;
+    public int indexSlot { get; set;}
 
-    public int indexSlot { get; set; }
-    public static event Action<int> OnClickSlot;
-    
+   
+    public void OnClickSlot()
+    {
+        OnClickSelectIndexSlot?.Invoke(indexSlot);
+    }
+   
 
 
     public void ShowInforSlot(bool isDisplay)
     {
         iconItem.gameObject.SetActive(isDisplay);
-        amountContainer.gameObject.SetActive(isDisplay);
+        amountItemContainer.gameObject.SetActive(isDisplay);
+        amountItem_TMP.gameObject.SetActive(isDisplay);
     }
-
-    public void OnClickSlotInventory()
-    {
-        OnClickSlot?.Invoke(indexSlot);
-    }
-
 }

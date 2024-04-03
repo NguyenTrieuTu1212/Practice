@@ -6,19 +6,19 @@ public class Inventory : MonoBehaviour
 {
     private static Inventory instance;
     public static Inventory Instance => instance;
-
     [SerializeField] private int inventorySize;
-    private int indexInventory;
     public int InventorySize => inventorySize;
+    public int currentIndex;
 
 
     private void Awake()
     {
         if(instance != null)
         {
-            Debug.Log("More than 1 instanne in your game!! Instance has been removed");
+            Debug.Log("More than instance in your game!!! instance has removed");
             return;
         }
+
         instance = this;
     }
 
@@ -30,22 +30,22 @@ public class Inventory : MonoBehaviour
     }
 
 
-
-
-    private void GetIndexInventoryCallback(int index)
+    private void GetIndexSlotCallback(int indexSlot)
     {
-        indexInventory = index;
-        Debug.Log("Click in slot : " + indexInventory);
+        currentIndex = indexSlot;
+        Debug.Log("Select is: " + currentIndex);
     }
-
 
     private void OnEnable()
     {
-        InventorySlot.OnClickSlot += GetIndexInventoryCallback;
+        InventorySlot.OnClickSelectIndexSlot += GetIndexSlotCallback;
     }
 
     private void OnDisable()
     {
-        InventorySlot.OnClickSlot += GetIndexInventoryCallback;
+        InventorySlot.OnClickSelectIndexSlot -= GetIndexSlotCallback;
     }
+
+
+
 }
