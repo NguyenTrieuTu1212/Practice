@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField][Range(1f,10f)] private float speedBullet;
     public Vector2 direction { get; set; }
-
-    [SerializeField][Range(1f, 10f)] private float speedBullet;
 
 
     private void Update()
@@ -18,5 +17,12 @@ public class Bullet : MonoBehaviour
     private void Shoot()
     {
         transform.Translate(direction * speedBullet * Time.deltaTime);
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider != null)
+            BulletManager.Instance.ReturnBulletInQueue(gameObject.GetComponent<Bullet>());
     }
 }

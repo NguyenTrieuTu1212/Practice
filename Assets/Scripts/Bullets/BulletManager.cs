@@ -7,19 +7,18 @@ public class BulletManager : MonoBehaviour
     private static BulletManager instance;
     public static BulletManager Instance => instance;
 
+    [SerializeField] private Transform container;
+    [SerializeField] private List<Bullet> bulletList = new List<Bullet>();
 
-    [SerializeField] private Transform Pool;
-    [SerializeField] private List<Bullet> listBullets = new List<Bullet>();
-    private Queue<Bullet> queueBullet = new Queue<Bullet>();
+    private Queue<Bullet> bulletActiveQueue = new Queue<Bullet>();    
 
     private void Awake()
     {
-        if (instance != null)
+        if(instance != null)
         {
-            Debug.Log("More than 1 instance in your game !!!");
+            Debug.Log("More than 1 instance in your game !!! instance has removed");
             return;
         }
-
         instance = this;
         AddPrefabs();
         Prepare();
@@ -27,42 +26,41 @@ public class BulletManager : MonoBehaviour
 
 
 
+
     private void AddPrefabs()
     {
         Transform objPrefabs = transform.Find("Prefabs");
-        foreach(Transform child in objPrefabs)
+        if (objPrefabs == null) return;
+        foreach (Transform child in objPrefabs)
         {
-            listBullets.Add(child.GetComponent<Bullet>());
+            bulletList.Add(child.gameObject.GetComponent<Bullet>());    
         }
-        HideBullet();
+        HidePrefabs();
     }
 
 
-    private void HideBullet()
+    private void HidePrefabs()
     {
-        foreach (Bullet bullet in listBullets)
+        foreach(Bullet bullet in bulletList)
         {
             bullet.gameObject.SetActive(false);
         }
     }
-
 
     private void Prepare()
     {
         for(int i = 0; i < 10; i++)
         {
-            Bullet bullet = Instantiate(listBullets[0],Pool);
+            Bullet bullet = Instantiate(bulletList[0], container);
             bullet.gameObject.SetActive(false);
-            queueBullet.Enqueue(bullet);
+            bulletActiveQueue.Enqueue(bullet);
         }
     }
 
-
-
-    public Bullet TakeBullet(Vector2 posSpawn)
+    public Bullet TakeBullet(Vector3 posSpawn)
     {
-        if(queueBullet.Count<=0) Prepare();
-        Bullet bullet = queueBullet.Dequeue();
+        if(bulletActiveQueue.Count <= 0) Prepare();
+        Bullet bullet = bulletActiveQueue.Dequeue();
         bullet.gameObject.SetActive(true);
         bullet.gameObject.transform.position = posSpawn;
         return bullet;
@@ -72,7 +70,7 @@ public class BulletManager : MonoBehaviour
     public void ReturnBulletInQueue(Bullet bullet)
     {
         bullet.gameObject.SetActive(false);
-        bullet.gameObject.transform.SetParent(Pool);
-        queueBullet.Enqueue(bullet);
+        bulletActiveQueue.Enqueue(bullet);
+        
     }
 }
