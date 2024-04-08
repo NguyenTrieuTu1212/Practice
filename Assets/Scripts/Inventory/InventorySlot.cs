@@ -15,10 +15,19 @@ public class InventorySlot : MonoBehaviour
 
 
 
-    public void UpdateSlot()
+
+    public void UpdateSlot(ItemSO item)
     {
-        iconItem.gameObject.SetActive(false);
-        amountContainer.gameObject.SetActive(false);   
+        iconItem.sprite = item.iconItem;
+        amountItem_TMP.text = item.amountItem;
+    }
+
+
+
+    public void ShowInforSlot(bool isDisplay)
+    {
+        iconItem.gameObject.SetActive(isDisplay);
+        amountContainer.gameObject.SetActive(isDisplay);   
     }
 
 

@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
 
 
     [SerializeField] private int inventorySize;
+    [SerializeField] private ItemSO item;
     public int InventorySize => inventorySize;
     public int currentIndex = 0;
 
@@ -29,6 +30,20 @@ public class Inventory : MonoBehaviour
         InventoryUI.Instance.InitInventory();
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            AddItem();
+        }
+    }
+
+
+    private void AddItem()
+    {
+        InventoryUI.Instance.DrawItem(item, 0);
+    }
 
     private void OnClickedSlotCallback(int index)
     {
