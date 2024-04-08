@@ -2,28 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 using TMPro;
+using System;
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private Image iconItem;
-    [SerializeField] private Image amountItemContainer;
+    [SerializeField] private Image amountContainer;
     [SerializeField] private TextMeshProUGUI amountItem_TMP;
-    public static event Action<int> OnClickSelectIndexSlot;
-    public int indexSlot { get; set;}
 
-   
-    public void OnClickSlot()
+    public static event Action<int> InventorySlotClicked;
+    public int Index { get; set; }
+
+
+
+    public void UpdateSlot()
     {
-        OnClickSelectIndexSlot?.Invoke(indexSlot);
+        iconItem.gameObject.SetActive(false);
+        amountContainer.gameObject.SetActive(false);   
     }
-   
 
 
-    public void ShowInforSlot(bool isDisplay)
+    public void SelectedSlot()
     {
-        iconItem.gameObject.SetActive(isDisplay);
-        amountItemContainer.gameObject.SetActive(isDisplay);
-        amountItem_TMP.gameObject.SetActive(isDisplay);
+        InventorySlotClicked?.Invoke(Index);
     }
+
 }
