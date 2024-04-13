@@ -5,7 +5,7 @@ using System;
 
 public class ButtonCallBack : MonoBehaviour
 {
-    [SerializeField] private int addIndex = 10;
+    [SerializeField] private int addIndex = 1;
 
     public static event Action<int> OnClickToAddPoint;
 

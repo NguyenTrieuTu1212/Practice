@@ -7,62 +7,57 @@ public class DataPersistanceManager : MonoBehaviour
 {
     private static DataPersistanceManager instance;
     public static DataPersistanceManager Instance => instance;
-    [SerializeField] private string fileName = "";
+
+    private List<IDataPersistance> dataPersistances = new List<IDataPersistance>();
     private GameData gameData;
-    private List<IDataPersistance> dataPersistances;
-    private FileHandler fileHandler;
 
-
+    [SerializeField] private string fileName = "";
+    private FileHanlderData fileHanlderData;
     private void Awake()
     {
         if(instance != null)
         {
-            Debug.Log("More than 1 instance in your game !!!!. Instance has been removed");
-            Destroy(gameObject);
+            Debug.Log("More than 1 instance in your game !!! ");
             return;
         }
         instance = this;
-        fileHandler = new FileHandler(Application.persistentDataPath,fileName);
-        DontDestroyOnLoad(gameObject);
+        fileHanlderData = new FileHanlderData(Application.persistentDataPath, fileName);    
+        
     }
-
 
 
     private void Start()
     {
-        dataPersistances = FindAllInterfaceInGameObject();
-        LoadGame(); 
+        dataPersistances = FindAllIDataPersistanceInGame();
+        LoadGame();
     }
 
-
-    private void NewGame()
+    public void NewGame()
     {
         gameData = new GameData();
     }
 
 
-
-    private void LoadGame()
+    public void LoadGame()
     {
-        gameData = fileHandler.ReadData();
-        if(gameData == null) NewGame();
-        foreach(IDataPersistance persistance in dataPersistances)
+        gameData = fileHanlderData.ReadData();
+        if (gameData == null) NewGame();
+        foreach (IDataPersistance persistance in dataPersistances)
         {
             persistance.LoadGame(gameData);
         }
-        Debug.Log("Load data game is" + gameData.point);
+        Debug.Log("Game data load is: " + gameData.pointAmount);
     }
 
 
-    private void SaveGame()
+    public void SaveGame()
     {
-        foreach (IDataPersistance persistance in dataPersistances)
+        foreach(IDataPersistance persistance in dataPersistances)
         {
             persistance.SaveGame(ref gameData);
         }
-
-        fileHandler.WriteData(gameData);
-        Debug.Log("Save data game is" + gameData.point);
+        fileHanlderData.WriteData(gameData);
+        Debug.Log("Game data saved is : " + gameData.pointAmount);
     }
 
 
@@ -71,12 +66,13 @@ public class DataPersistanceManager : MonoBehaviour
         SaveGame();
     }
 
-    private List<IDataPersistance> FindAllInterfaceInGameObject()
+
+
+    private List<IDataPersistance> FindAllIDataPersistanceInGame()
     {
         IEnumerable<IDataPersistance> dataPersistances = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistance>();
         return new List<IDataPersistance>(dataPersistances);
     }
 
 
-    
 }
