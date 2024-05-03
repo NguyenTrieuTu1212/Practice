@@ -5,11 +5,13 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using System;
 
+
 public class HealthBarManager : MonoBehaviour
 {
     [SerializeField] private Slider processSlider;
     [SerializeField][Range(0.01f, 0.5f)] private float offset;
     [SerializeField][Range(1,10f)] private float maxTimeRequireToChangedColor;
+    [SerializeField] private PlayerEnergy playerEnergy;
     
     [SerializeField] private List<Image> nodeList = new List<Image>();
     private float maxTime = 0.25f;
@@ -32,8 +34,8 @@ public class HealthBarManager : MonoBehaviour
 
     private void ProcessBar()
     {
+        speedRunProcess = (processSlider.value > 0.75f) ? 3f : 5f;
         if (Input.GetKeyDown(KeyCode.Q) && canPressed) processSlider.value += speedRunProcess * 0.02f;
-        if (processSlider.value > 0.75f) speedRunProcess = 3f;
         if (processSlider.value >= 1f && indexNode < nodeList.Count) Process();
         else if (indexNode >= nodeList.Count) StartCoroutine(WaitingResetSliderBar());
         processSlider.value -= Time.deltaTime * 0.3f;
@@ -48,6 +50,7 @@ public class HealthBarManager : MonoBehaviour
         if (timeRequireToChangedColor >= maxTimeRequireToChangedColor)
         {
             ChangeColorNode(indexNode);
+            
             processSlider.value -= offset;
             timeRequireToChangedColor = 0;
         }
@@ -62,8 +65,9 @@ public class HealthBarManager : MonoBehaviour
     private async Task ChangeColorWithSound(int index)
     {
         nodeList[index].color = Color.green;
-        await Task.Delay(100); 
-        AudioManager.Instance.PlaySFX("Bip"); 
+        playerEnergy.DegreeEnergy(5);
+        await Task.Delay(100);
+        AudioManager.Instance.PlaySFX("Bip");
     }
 
 
