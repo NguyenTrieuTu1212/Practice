@@ -8,7 +8,6 @@ public class PlayerEnergy : MonoBehaviour
 {
     private Player player;
     public int currentEnergy { get; set; }
-
     private bool canIncrease = true;
     
 
@@ -17,7 +16,6 @@ public class PlayerEnergy : MonoBehaviour
         player = GetComponent<Player>();
         currentEnergy = player.Stats.energy;
     }
-
 
 
 
@@ -31,11 +29,9 @@ public class PlayerEnergy : MonoBehaviour
     {
         player.Stats.energy = Math.Max(currentEnergy-=amount,0);
         currentEnergy = player.Stats.energy;
+        EnergyText energyText = TextManager.Instance.TakeText(amount);
         Debug.Log("Current Energy is: " + currentEnergy);
     }
-
-
-
 
     IEnumerator WaitingIncreaseEnenrgy()
     {
@@ -46,10 +42,4 @@ public class PlayerEnergy : MonoBehaviour
         yield return new WaitForSeconds(2f);
         canIncrease = true;
     }
-
-
-    
-
-
-
 }

@@ -12,5 +12,8 @@ public class PlayerStats : ScriptableObject
     public int maxEnergy;
     public int strength;
     public int maxStrength;
-    
+
+
+    public int minRangeValueIncreaseHealth;
+    public int maxRangeValueIncreaseHealth;
 }

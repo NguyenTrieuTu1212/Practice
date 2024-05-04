@@ -28,6 +28,5 @@ public class UIManager : MonoBehaviour
         helthPlayer_TMP.text = $"Health: {player.Stats.health}";
         energyPlayer_TMP.text = $"Energy: {player.Stats.energy}";
         strengthPlayer_TMP.text = $"Strength: {player.Stats.strength}";
-
     }
 }
