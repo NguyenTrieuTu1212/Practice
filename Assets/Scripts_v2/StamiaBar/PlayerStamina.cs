@@ -18,9 +18,10 @@ public class PlayerStamina : MonoBehaviour
     private Player player;
     private PlayerEnergy playerEnergy;
     private PlayerHealth playerHealth;
+    private PlayerStrength playerStrength;
 
 
-    private float speedRunProcessStaminaBar = 5f;
+    public float speedRunProcessStaminaBar { get; set; }
     private float initValueStaminaBar = 0.25f;
     private bool canPressed = true;
     private int indexNode = 0;
@@ -33,6 +34,7 @@ public class PlayerStamina : MonoBehaviour
         player = GetComponent<Player>();
         playerEnergy = GetComponent<PlayerEnergy>();
         playerHealth = GetComponent<PlayerHealth>();
+        playerStrength = GetComponent<PlayerStrength>();
         staminaBarPlayer.value = initValueStaminaBar;
     }
 
@@ -44,7 +46,7 @@ public class PlayerStamina : MonoBehaviour
 
     private void ProcessStaminaBar()
     {
-        speedRunProcessStaminaBar = (staminaBarPlayer.value > 0.75f) ? 3f : 5f;
+        speedRunProcessStaminaBar = (staminaBarPlayer.value > 0.75f) ? 3f : 8f;
 
         if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10) 
             staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
@@ -52,10 +54,13 @@ public class PlayerStamina : MonoBehaviour
         if(staminaBarPlayer.value >= 1f)
         {
             if (indexNode < nodeList.Count) ProcessNode();
-            if(indexNode >= nodeList.Count)
+            if (indexNode >= nodeList.Count)
             {
+                playerStrength.AddStrength(player.Stats.ValueIncreaseStrength);
+
                 playerHealth.IncreaseHealth(Random.Range(player.Stats.minRangeValueIncreaseHealth, 
                     player.Stats.maxRangeValueIncreaseHealth));
+
                 StartCoroutine(WaitingResetStaminaBar());
             }
         }
@@ -86,7 +91,7 @@ public class PlayerStamina : MonoBehaviour
     private async Task ChangeColorWithSound(int index)
     {
         nodeList[index].color = Color.green;
-        playerEnergy.DegreeEnergy(5);
+        playerEnergy.DegreeEnergy(player.Stats.energyRequirementsPerWorkout);
         await Task.Delay(100);
         AudioManager.Instance.PlaySFX("Bip");
     }

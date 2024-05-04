@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 public class PlayerEnergy : MonoBehaviour
 {
     private Player player;
+    [SerializeField] private Animator animatorOfEnergyTMP;
+
     public int currentEnergy { get; set; }
     private bool canIncrease = true;
     
@@ -21,8 +23,9 @@ public class PlayerEnergy : MonoBehaviour
 
     private void Update()
     {
-        if (currentEnergy <= 40 && canIncrease) StartCoroutine(WaitingIncreaseEnenrgy());
-        
+        if (currentEnergy <= 20 && canIncrease) StartCoroutine(WaitingIncreaseEnenrgy());
+        if(currentEnergy <= 10 ) animatorOfEnergyTMP.SetBool("isFlicker", true);
+        else animatorOfEnergyTMP.SetBool("isFlicker", false);
     }
 
     public void DegreeEnergy(int amount)

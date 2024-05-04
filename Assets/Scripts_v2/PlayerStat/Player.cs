@@ -5,7 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private PlayerStats stats;
-
     public PlayerStats Stats => stats;
 
+
+
+    private void OnApplicationQuit()
+    {
+        stats.ResetStatsPlayer();
+    }
 }

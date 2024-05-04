@@ -25,8 +25,8 @@ public class UIManager : MonoBehaviour
 
     private void LoadStatsPlayer()
     {
-        helthPlayer_TMP.text = $"Health: {player.Stats.health}";
-        energyPlayer_TMP.text = $"Energy: {player.Stats.energy}";
-        strengthPlayer_TMP.text = $"Strength: {player.Stats.strength}";
+        helthPlayer_TMP.text = $"{player.Stats.health}";
+        energyPlayer_TMP.text = $"{player.Stats.energy}";
+        strengthPlayer_TMP.text = $"{player.Stats.strength}";
     }
 }
