@@ -12,5 +12,15 @@ public class Level_SO : ScriptableObject
     public int timeRequirement;
 
     [Header("Reward for payer")]
-    public int countAmount;
+    public int coinAmount;
+
+    public bool isWinLevel;
+}
+
+
+[System.Serializable]
+public class Level
+{
+    public string nameLevel;
+    public Level_SO levelPrebsSO;
 }

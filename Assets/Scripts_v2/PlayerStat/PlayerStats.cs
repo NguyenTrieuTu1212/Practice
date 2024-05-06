@@ -24,11 +24,8 @@ public class PlayerStats : ScriptableObject
     public int maxStrength;
     public int ValueIncreaseStrength;
 
-    
-
-
-
-
+    [Header("===== Configue money for player =====")]
+    public int coin;
     public void ResetStatsPlayer()
     {
         health = 1;
