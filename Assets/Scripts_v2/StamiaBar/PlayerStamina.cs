@@ -19,7 +19,7 @@ public class PlayerStamina : MonoBehaviour
     private PlayerEnergy playerEnergy;
     private PlayerHealth playerHealth;
     private PlayerStrength playerStrength;
-
+    private Animator animatorPlayer;
 
     public float speedRunProcessStaminaBar { get; set; }
     private float initValueStaminaBar = 0.25f;
@@ -35,6 +35,7 @@ public class PlayerStamina : MonoBehaviour
         playerEnergy = GetComponent<PlayerEnergy>();
         playerHealth = GetComponent<PlayerHealth>();
         playerStrength = GetComponent<PlayerStrength>();
+        animatorPlayer = GetComponent<Animator>();
         staminaBarPlayer.value = initValueStaminaBar;
     }
 
@@ -48,10 +49,14 @@ public class PlayerStamina : MonoBehaviour
     {
         speedRunProcessStaminaBar = (staminaBarPlayer.value > 0.75f) ? 3f : 8f;
 
-        if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10) 
+        if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10)
+        {
             staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
-
-        if(staminaBarPlayer.value >= 1f)
+            animatorPlayer.SetBool("isPractice", true);
+            
+        }
+        animatorPlayer.SetBool("isPractice", false);
+        if (staminaBarPlayer.value >= 1f)
         {
             if (indexNode < nodeList.Count) ProcessNode();
             if (indexNode >= nodeList.Count)
