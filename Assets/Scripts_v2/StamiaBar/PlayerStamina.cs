@@ -49,12 +49,27 @@ public class PlayerStamina : MonoBehaviour
     {
         speedRunProcessStaminaBar = (staminaBarPlayer.value > 0.75f) ? 3f : 8f;
 
-        if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10)
+        /*if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10)
         {
             staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
             animatorPlayer.SetBool("isPractice", true);
             
+        }*/
+
+      
+        if (Input.touchCount > 0 && canPressed && playerEnergy.currentEnergy > 10)
+        {
+            
+            Touch touch = Input.GetTouch(0);
+
+            
+            if (touch.phase == TouchPhase.Began)
+            {
+                staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
+            }
         }
+
+
         animatorPlayer.SetBool("isPractice", false);
         if (staminaBarPlayer.value >= 1f)
         {

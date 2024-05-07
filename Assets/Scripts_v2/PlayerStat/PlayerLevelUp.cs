@@ -6,8 +6,4 @@ public class PlayerLevelUp : MonoBehaviour
 {
 
     private Player player;
-
-    
-
-
 }
