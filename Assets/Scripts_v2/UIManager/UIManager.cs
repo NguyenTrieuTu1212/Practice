@@ -6,6 +6,9 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    private static UIManager instance;
+    public static UIManager Instance => instance;
+
 
     [SerializeField] private Player player;
 
@@ -18,9 +21,48 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinAmount_TMP;
 
 
+
+    [SerializeField] private Timer timer;
+    [SerializeField] private TextMeshProUGUI healthRequirement_TMP;
+    [SerializeField] private TextMeshProUGUI strengthRequirement_TMP;
+
+
+
+
+    [Header("Configue Check Task for player")]
+    [SerializeField] private Image iconCheckmarkHealth;
+    [SerializeField] private Image iconCheckmarkStrength;
+    [SerializeField] private Sprite iconCheckmarkComplete;
+    [SerializeField] private Sprite iconCheckmarkNotComplete;
+
+    [Header("Configue panel win")]
+    [SerializeField] private Image panelWin;
+    [SerializeField] private TextMeshProUGUI coinReward_TMP;
+
+    private int levelIndex;
+    private int coinReward = 0;
+  
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.Log("More than 1 instance in your game !!! Instance has been removed !!!!");
+            return;
+        }
+        instance = this;
+    }
+
+
+    private void Start()
+    {
+        levelIndex = 0;
+        panelWin.gameObject.SetActive(false);
+    }
+
     private void Update()
     {
         LoadStatsPlayer();
+        CheckCompleteTask();
     }
 
 
@@ -34,5 +76,59 @@ public class UIManager : MonoBehaviour
 
 
 
+    public void LoadStatsRequirement()
+    {
+        timer.remainigTime = LevelManager.Instance.Levels[levelIndex].levelPrebsSO.timeRequirement;
+        healthRequirement_TMP.text = LevelManager.Instance.Levels[levelIndex].levelPrebsSO.healthRequirement.ToString();
+        strengthRequirement_TMP.text = LevelManager.Instance.Levels[levelIndex].levelPrebsSO.strengthRequirement.ToString();
+    }
+
+
+    private void CheckCompleteTask()
+    {
+        iconCheckmarkHealth.sprite = player.Stats.health >= LevelManager.Instance.Levels[levelIndex].levelPrebsSO.healthRequirement
+                                     ? iconCheckmarkComplete
+                                     : iconCheckmarkNotComplete;
+
+        iconCheckmarkStrength.sprite = player.Stats.strength >= LevelManager.Instance.Levels[levelIndex].levelPrebsSO.strengthRequirement
+                                    ? iconCheckmarkComplete
+                                    : iconCheckmarkNotComplete;
+
+        if (player.Stats.health >= LevelManager.Instance.Levels[levelIndex].levelPrebsSO.healthRequirement
+            && player.Stats.strength >= LevelManager.Instance.Levels[levelIndex].levelPrebsSO.strengthRequirement
+            && timer.remainigTime > 0)
+        {
+            if (panelWin.IsActive()) return;
+            DisplayPanelWin();
+        }
+    }
+
+
+
+
+    private void DisplayPanelWin()
+    {
+        panelWin.gameObject.SetActive(true);
+        coinReward = Random.Range(10, 50);
+        coinReward_TMP.text = coinReward.ToString();
+    }
+
+
+
+
+    public void NextLevel()
+    {
+        if (levelIndex >= LevelManager.Instance.Levels.Length) return;
+        levelIndex++;
+        player.Stats.ResetStatsPlayer();
+        player.Stats.coin += coinReward;
+        panelWin.gameObject.SetActive(false);
+        LoadStatsRequirement();
+    }
+
+
+
+
+   
 
 }

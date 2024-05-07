@@ -6,16 +6,15 @@ using TMPro;
 public class LevelManager : MonoBehaviour
 {
     private static LevelManager instance;
-    public static LevelManager Instace => instance;
+    public static LevelManager Instance => instance;
 
-
-
-    [SerializeField] private Timer timer;
-    [SerializeField] private TextMeshProUGUI healthRequirement_TMP;
-    [SerializeField] private TextMeshProUGUI strengthRequirement_TMP;
 
     [SerializeField] private Level[] listLevel;
-
+    public Level[] Levels   
+    {
+        get { return listLevel; }   
+        set { listLevel = value; }  
+    }
 
     private void Awake()
     {
@@ -25,24 +24,16 @@ public class LevelManager : MonoBehaviour
             return;
         }
         instance = this;
+        LoadIndexLevel();
     }
 
 
 
-    private void Start()
+    
+
+    public void LoadIndexLevel()
     {
-        LoadIndexLevel(1);
-    }
-
-
-
-    public void LoadIndexLevel(int levelIndex)
-    {
-        if (levelIndex >= listLevel.Length) return;
-        timer.remainigTime = listLevel[levelIndex].levelPrebsSO.timeRequirement;
-        strengthRequirement_TMP.text = listLevel[levelIndex].levelPrebsSO.strengthRequirement.ToString();
-        healthRequirement_TMP.text = listLevel[levelIndex].levelPrebsSO.healthRequirement.ToString();
-
+        UIManager.Instance.LoadStatsRequirement();
     }
 
 
