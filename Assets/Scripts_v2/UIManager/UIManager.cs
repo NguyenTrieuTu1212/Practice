@@ -13,7 +13,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Player player;
 
 
-
     [Header("Configue Stats for Player")]
     [SerializeField] private TextMeshProUGUI helthPlayer_TMP;
     [SerializeField] private TextMeshProUGUI energyPlayer_TMP;
@@ -38,6 +37,10 @@ public class UIManager : MonoBehaviour
     [Header("Configue panel win")]
     [SerializeField] private Image panelWin;
     [SerializeField] private TextMeshProUGUI coinReward_TMP;
+
+    [Header("Configue panel gameover")]
+    [SerializeField] private Image panelGameOver;
+   
 
     private int levelIndex;
     private int coinReward = 0;
@@ -76,7 +79,7 @@ public class UIManager : MonoBehaviour
 
 
 
-    public void LoadStatsRequirement()
+    public void LoadStatsRequirementCurrent()
     {
         timer.remainigTime = LevelManager.Instance.Levels[levelIndex].levelPrebsSO.timeRequirement;
         healthRequirement_TMP.text = LevelManager.Instance.Levels[levelIndex].levelPrebsSO.healthRequirement.ToString();
@@ -101,16 +104,23 @@ public class UIManager : MonoBehaviour
             if (panelWin.IsActive()) return;
             DisplayPanelWin();
         }
+        if(timer.remainigTime <= 0)
+        {
+            if (panelWin.IsActive()) return;
+            DisplayPanelGameOver();
+        }
     }
-
-
-
 
     private void DisplayPanelWin()
     {
         panelWin.gameObject.SetActive(true);
         coinReward = Random.Range(10, 50);
         coinReward_TMP.text = coinReward.ToString();
+    }
+
+    private void DisplayPanelGameOver()
+    {
+        panelGameOver.gameObject.SetActive(true);
     }
 
 
@@ -123,12 +133,16 @@ public class UIManager : MonoBehaviour
         player.Stats.ResetStatsPlayer();
         player.Stats.coin += coinReward;
         panelWin.gameObject.SetActive(false);
-        LoadStatsRequirement();
+        LoadStatsRequirementCurrent();
     }
 
 
 
-
-   
-
+    public void ReplayGame()
+    {
+        LoadStatsRequirementCurrent();
+        player.Stats.ResetStatsPlayer();
+        panelWin.gameObject.SetActive(false);
+        panelGameOver.gameObject.SetActive(false);
+    }
 }

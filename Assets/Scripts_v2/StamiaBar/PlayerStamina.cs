@@ -27,6 +27,9 @@ public class PlayerStamina : MonoBehaviour
     private int indexNode = 0;
     float timeRequireToChangedColor = 0;
 
+
+
+
   
 
     private void Start()
@@ -41,36 +44,30 @@ public class PlayerStamina : MonoBehaviour
 
     private void Update()
     {
+        HandleScreenTouch();
         ProcessStaminaBar();
     }
+
+
+    private void HandleScreenTouch()
+    {
+        if(staminaBarPlayer.value < 0.25f) animatorPlayer.SetBool("isPractice", false);
+        if ((Input.touchCount > 0) && canPressed && playerEnergy.currentEnergy > 10)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
+                PlayAnimation();
+            }
+        }
+    }
+
 
 
     private void ProcessStaminaBar()
     {
         speedRunProcessStaminaBar = (staminaBarPlayer.value > 0.75f) ? 3f : 8f;
-
-        /*if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10)
-        {
-            staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
-            animatorPlayer.SetBool("isPractice", true);
-            
-        }*/
-
-      
-        if (Input.touchCount > 0 && canPressed && playerEnergy.currentEnergy > 10)
-        {
-            
-            Touch touch = Input.GetTouch(0);
-
-            
-            if (touch.phase == TouchPhase.Began)
-            {
-                staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
-            }
-        }
-
-
-        animatorPlayer.SetBool("isPractice", false);
         if (staminaBarPlayer.value >= 1f)
         {
             if (indexNode < nodeList.Count) ProcessNode();
@@ -78,13 +75,32 @@ public class PlayerStamina : MonoBehaviour
             {
                 playerStrength.AddStrength(player.Stats.ValueIncreaseStrength);
 
-                playerHealth.IncreaseHealth(Random.Range(player.Stats.minRangeValueIncreaseHealth, 
+                playerHealth.IncreaseHealth(Random.Range(player.Stats.minRangeValueIncreaseHealth,
                     player.Stats.maxRangeValueIncreaseHealth));
 
                 StartCoroutine(WaitingResetStaminaBar());
             }
         }
         staminaBarPlayer.value -= Time.deltaTime * 0.3f;
+        /*if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10)
+        {
+            staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
+            animatorPlayer.SetBool("isPractice", true);
+            
+        }*/
+
+
+        /*if ((Input.touchCount > 0) && canPressed && playerEnergy.currentEnergy > 10)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
+                PlayAnimation();
+            }
+        }*/
+
+
 
     }
 
@@ -132,7 +148,25 @@ public class PlayerStamina : MonoBehaviour
     }
 
 
+    private IEnumerator PlayAnimationSmoothly()
+    {
+        animatorPlayer.SetBool("isPractice", true);
+        yield return new WaitForSeconds(0.5f);
+    }
 
-   
-    
+    private void PlayAnimation()
+    {
+        StartCoroutine(PlayAnimationSmoothly());
+    }
+
+
+
+    /*private async void PlayAnimation()
+    {
+        animatorPlayer.SetBool("isPractice", true);
+        await Task.Delay(500);
+        animatorPlayer.SetBool("isPractice", false);
+    }
+*/
+
 }

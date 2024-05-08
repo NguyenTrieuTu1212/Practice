@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadIndexLevel()
     {
-        UIManager.Instance.LoadStatsRequirement();
+        UIManager.Instance.LoadStatsRequirementCurrent();
     }
 
 

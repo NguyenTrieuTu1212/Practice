@@ -6,16 +6,17 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
+    [SerializeField] private Animator animator; 
     [SerializeField] private TextMeshProUGUI timeDisplay_TMP;
 
     public float remainigTime { get; set; }
 
 
-    
 
     private void Update()
     {
         if (remainigTime < 0) return;
+        CheckTimeOut();
         CountdownTime();
     }
 
@@ -27,6 +28,13 @@ public class Timer : MonoBehaviour
         float minutes = Mathf.FloorToInt(remainigTime / 60);
         float seconds = Mathf.FloorToInt(remainigTime % 60);
         timeDisplay_TMP.text = String.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+
+    private void CheckTimeOut()
+    {
+        if (remainigTime <= 10) animator.SetBool("isTimeOut", true);
+        else animator.SetBool("isTimeOut", false);
     }
 
 }

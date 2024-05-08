@@ -8,10 +8,11 @@ public class EnergyText : MonoBehaviour
 {
     [SerializeField] private Image iconEnergy;
     [SerializeField] private TextMeshProUGUI amountEnenrgy_TMP;
-
+    [SerializeField] private TextMeshProUGUI amountEnenrgy_BG_TMP;
     public void LoadInfoAmountTextEnergy(int amount)
     {
-        amountEnenrgy_TMP.text = amount.ToString();
+        amountEnenrgy_TMP.text = $"-{amount}";
+        amountEnenrgy_BG_TMP.text = amountEnenrgy_TMP.text;
     }
 
 

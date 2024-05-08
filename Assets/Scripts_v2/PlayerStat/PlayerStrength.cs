@@ -24,7 +24,7 @@ public class PlayerStrength : MonoBehaviour
             player.Stats.minRangeValueIncreaseHealth++;
             player.Stats.maxRangeValueIncreaseHealth++;
             player.Stats.energyRequirementsPerWorkout--;
-            if(player.Stats.energyRequirementsPerWorkout < 0) player.Stats.energyRequirementsPerWorkout = 1;
+            if(player.Stats.energyRequirementsPerWorkout <= 0) player.Stats.energyRequirementsPerWorkout = 1;
         }
     
     }

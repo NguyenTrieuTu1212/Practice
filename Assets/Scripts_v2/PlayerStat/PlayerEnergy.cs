@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Threading.Tasks;
-
+using UnityEngine.UI;
 public class PlayerEnergy : MonoBehaviour
 {
     private Player player;
+    [SerializeField] private Image panelAlert;
     [SerializeField] private Animator animatorOfEnergyTMP;
 
     public int currentEnergy { get; set; }
     private bool canIncrease = true;
-    
+    private bool isDisplayAlert = false;
 
     private void Awake()
     {
@@ -23,8 +24,11 @@ public class PlayerEnergy : MonoBehaviour
 
     private void Update()
     {
+        isDisplayAlert = currentEnergy <= 10 ? true : false;
+        panelAlert.gameObject.SetActive(isDisplayAlert);
+        if (isDisplayAlert) player.GetComponent<Animator>().SetBool("isPractice", false);
         if (currentEnergy <= 20 && canIncrease) StartCoroutine(WaitingIncreaseEnenrgy());
-        if(currentEnergy <= 10 ) animatorOfEnergyTMP.SetBool("isFlicker", true);
+        if (currentEnergy <= 10) animatorOfEnergyTMP.SetBool("isFlicker", true);
         else animatorOfEnergyTMP.SetBool("isFlicker", false);
     }
 
@@ -44,5 +48,28 @@ public class PlayerEnergy : MonoBehaviour
         player.Stats.energy = currentEnergy;    
         yield return new WaitForSeconds(2f);
         canIncrease = true;
+    }
+
+    
+
+
+    private void ResetEnergyCallback()
+    {
+        currentEnergy = player.Stats.maxEnergy;
+    }
+
+
+    private void OnEnable()
+    {
+        ButonNext.OnClickNextLevel += ResetEnergyCallback;
+        ButtonReplay.OnClickReplayLevel += ResetEnergyCallback;
+
+    }
+
+
+    private void OnDisable()
+    {
+        ButonNext.OnClickNextLevel -= ResetEnergyCallback;
+        ButtonReplay.OnClickReplayLevel -= ResetEnergyCallback;
     }
 }
