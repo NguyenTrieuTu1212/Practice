@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using TMPro;
 
 public class Timer : MonoBehaviour
 {
+    [SerializeField] private Image panelShop;
     [SerializeField] private Animator animator; 
     [SerializeField] private TextMeshProUGUI timeDisplay_TMP;
 
@@ -17,7 +19,7 @@ public class Timer : MonoBehaviour
     {
         if (remainigTime < 0) return;
         CheckTimeOut();
-        CountdownTime();
+        if(!panelShop.IsActive()) CountdownTime();
     }
 
 

@@ -34,7 +34,11 @@ public class InvenoryLoadUI : MonoBehaviour
     public void LoadInforSlot(Items_SO item, int indexSlot)
     {
         InventorySlots slot = listSlotInventory[indexSlot];
-        if (item == null) return;
+        if (item == null)
+        {
+            slot.ShowImageItem(false);
+            return;
+        }
         slot.ShowImageItem(true);
         slot.LoadItem(item);
     }

@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI energyPlayer_TMP;
     [SerializeField] private TextMeshProUGUI strengthPlayer_TMP;
     [SerializeField] private TextMeshProUGUI coinAmount_TMP;
-
+    [SerializeField] private TextMeshProUGUI coinDisplayAmount_TMP;
 
 
     [SerializeField] private Timer timer;
@@ -75,6 +75,7 @@ public class UIManager : MonoBehaviour
         energyPlayer_TMP.text = $"{player.Stats.energy}";
         strengthPlayer_TMP.text = $"{player.Stats.strength}";
         coinAmount_TMP.text = $"{player.Stats.coin}";
+        coinDisplayAmount_TMP.text = $"{player.Stats.coin}";
     }
 
 

@@ -82,26 +82,6 @@ public class PlayerStamina : MonoBehaviour
             }
         }
         staminaBarPlayer.value -= Time.deltaTime * 0.3f;
-        /*if (Input.GetKeyDown(KeyCode.Q) && canPressed && playerEnergy.currentEnergy > 10)
-        {
-            staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
-            animatorPlayer.SetBool("isPractice", true);
-            
-        }*/
-
-
-        /*if ((Input.touchCount > 0) && canPressed && playerEnergy.currentEnergy > 10)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                staminaBarPlayer.value += speedRunProcessStaminaBar * 0.02f;
-                PlayAnimation();
-            }
-        }*/
-
-
-
     }
 
 
@@ -161,12 +141,5 @@ public class PlayerStamina : MonoBehaviour
 
 
 
-    /*private async void PlayAnimation()
-    {
-        animatorPlayer.SetBool("isPractice", true);
-        await Task.Delay(500);
-        animatorPlayer.SetBool("isPractice", false);
-    }
-*/
 
 }

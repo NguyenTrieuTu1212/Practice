@@ -80,7 +80,7 @@ public class ShopManager : MonoBehaviour
 public class ItemShop
 {
     public string Name;
-    public Item Item;
+    public Items_SO Item;
     public int price;
     public int percentRandom;
 }
