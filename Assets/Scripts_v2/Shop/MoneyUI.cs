@@ -9,8 +9,6 @@ public class MoneyUI : MonoBehaviour
     public static MoneyUI Instance => instance;
 
 
-
-
     private void Awake()
     {
         if (instance != null) return;

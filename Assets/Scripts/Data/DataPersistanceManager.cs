@@ -18,9 +18,11 @@ public class DataPersistanceManager : MonoBehaviour
         if(instance != null)
         {
             Debug.Log("More than 1 instance in your game !!! ");
+            Destroy(gameObject);
             return;
         }
         instance = this;
+        DontDestroyOnLoad(gameObject);
         fileHanlderData = new FileHanlderData(Application.persistentDataPath, fileName);    
         
     }

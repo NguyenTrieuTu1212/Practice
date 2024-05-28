@@ -15,6 +15,7 @@ public class ButtonUse : MonoBehaviour
 
     public void OnClickUseItem()
     {
+        AudioManager.Instance.PlaySFX("Press");
         InventoryManager.Instance.UseItem();
         gameObject.SetActive(false);
     }

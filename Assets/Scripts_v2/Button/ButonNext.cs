@@ -9,7 +9,7 @@ public class ButonNext : MonoBehaviour
 
     public void OnClickButtonNextLevel()
     {
-        
+        AudioManager.Instance.PlaySFX("Press");
         UIManager.Instance.NextLevel();
         OnClickNextLevel?.Invoke();
     }

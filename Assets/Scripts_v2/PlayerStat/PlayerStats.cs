@@ -29,7 +29,7 @@ public class PlayerStats : ScriptableObject
     public void ResetStatsPlayer()
     {
         health = 1;
-        maxHealth = 10;
+        maxHealth = 100;
         energy = 100;
         strength = 0;
         energyRequirementsPerWorkout = 5;

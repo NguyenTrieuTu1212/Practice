@@ -36,6 +36,7 @@ public class SlotShopItem : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.PlaySFX("NotEnough");
             Debug.Log("Not enough money");
         }
     }

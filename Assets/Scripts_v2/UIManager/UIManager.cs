@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviour 
 {
     private static UIManager instance;
     public static UIManager Instance => instance;
@@ -39,8 +39,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinReward_TMP;
 
     [Header("Configue panel gameover")]
+
     [SerializeField] private Image panelGameOver;
-   
 
     private int levelIndex;
     private int coinReward = 0;
@@ -105,11 +105,8 @@ public class UIManager : MonoBehaviour
             if (panelWin.IsActive()) return;
             DisplayPanelWin();
         }
-        if(timer.remainigTime <= 0)
-        {
-            if (panelWin.IsActive()) return;
-            DisplayPanelGameOver();
-        }
+        if(timer.remainigTime <= 0) DisplayPanelGameOver();
+
     }
 
     private void DisplayPanelWin()
@@ -122,6 +119,7 @@ public class UIManager : MonoBehaviour
     private void DisplayPanelGameOver()
     {
         panelGameOver.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySFX("GameOver");
     }
 
 
@@ -134,6 +132,7 @@ public class UIManager : MonoBehaviour
         player.Stats.ResetStatsPlayer();
         player.Stats.coin += coinReward;
         panelWin.gameObject.SetActive(false);
+        ShopManager.Instance.LoadItemShop();
         LoadStatsRequirementCurrent();
     }
 
@@ -146,4 +145,6 @@ public class UIManager : MonoBehaviour
         panelWin.gameObject.SetActive(false);
         panelGameOver.gameObject.SetActive(false);
     }
+
+    
 }
